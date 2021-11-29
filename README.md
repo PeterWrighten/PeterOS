@@ -17,7 +17,7 @@ Lab's Reference: [OSTEP](https://github.com/PeterWrighten/ostep-homework)
 If it is possible, I also wanna try re-implementing this OS
 by Rust. (An ambitious purpose)
 
-[RUST XV6]()
+[RUST XV6](https://github.com/PeterWrighten/OperatingSystem/tree/main/xv6_rust)
 
 
 
