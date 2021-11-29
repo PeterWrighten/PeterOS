@@ -10,6 +10,15 @@ This Repo would just take notes about MIT 6.S081 Lecture, and I would implement 
 
 [MIT 6.S081 Lab](https://github.com/PeterWrighten/MIT_6.S081_Lab)
 
+
+
 Lab's Reference: [OSTEP](https://github.com/PeterWrighten/ostep-homework)
+
+If it is possible, I also wanna try re-implementing this OS
+by Rust. (An ambitious purpose)
+
+[RUST XV6]()
+
+
 
 # Lecture
