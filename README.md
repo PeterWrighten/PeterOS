@@ -22,3 +22,5 @@ by Rust. (An ambitious purpose)
 
 
 # Lecture
+
+## 1. Prerequisites
