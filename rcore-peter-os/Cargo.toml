@@ -1,5 +1,5 @@
 [package]
-name = "xv6_rust"
+name = "rcore-peter-os"
 version = "0.1.0"
 edition = "2021"
 
