@@ -6,7 +6,19 @@ This Repo is almost based on [MIT 6.S081](https://pdos.csail.mit.edu/6.828/2021/
 
 # Lab
 
-This Repo would just take notes about MIT 6.S081 Lecture, and I would implement Lab in the other Repo:
+In Lab part of this repository, I would implement a mini OS called peter_os.
+
+[rCorePeterOS](./rcore-peter-os)
+
+Because this OS is a course's lab in THU, I would also finish the course in following repository:
+
+[RustOS](https://github.com/PeterWrighten/RustOS)
+
+## Reference
+
+[rCore Doc](https://rcore-os.github.io/rCore-Tutorial-Book-v3/chapter0/index.html)
+
+# More Lab
 
 [MIT 6.S081 Lab](https://github.com/PeterWrighten/MIT_6.S081_Lab)
 
@@ -14,13 +26,7 @@ This Repo would just take notes about MIT 6.S081 Lecture, and I would implement 
 
 Lab's Reference: [OSTEP](https://github.com/PeterWrighten/ostep-homework)
 
-If it is possible, I also wanna try re-implementing an OS
-by Rust. (An ambitious purpose)
-
-[rCorePeterOS](./rcore-peter-os)
 
 
 
-# Lecture
 
-## 1. Prerequisites
