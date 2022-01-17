@@ -4,12 +4,14 @@
 // Move away 'main()' function
 #![no_main]
 
-// Invoke lang_items mod to implement "panic handler"
-mod lang_items;
-mod sbi;
+//Read Panic info
+#![feature(panic_info_message)]
 
+// Call lang_items mod to implement "panic handler"
 #[macro_use]
 mod console;
+mod lang_items;
+mod sbi;
 
 use core::arch::global_asm;
 global_asm!(include_str!("entry.asm"));
@@ -18,7 +20,7 @@ global_asm!(include_str!("entry.asm"));
 pub fn rust_main() -> ! {
     clear_bss();
     println!("Hello world!");
-    loop{}
+    panic!("Shutdown machine!");
 }
 
 fn clear_bss() {
