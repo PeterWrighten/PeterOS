@@ -24,7 +24,7 @@ In Lab part of this repository, I would implement a mini OS called peter_os.
 
 [CS162 Lab](https://github.com/PeterWrighten/CS162)
 
-Lab's Reference: [OSTEP](https://github.com/PeterWrighten/ostep-homework)
+[OSTEP](https://github.com/PeterWrighten/ostep-homework)
 
 
 
