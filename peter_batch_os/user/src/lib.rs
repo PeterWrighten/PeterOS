@@ -2,8 +2,6 @@
 #![feature(linkage)]
 #![feature(panic_info_message)]
 
-
-
 #[macro_use]
 pub mod console;
 mod syscall;
