@@ -1,4 +1,9 @@
 
+use std::cell::RefCell;
+// static A: RefCell<i32> = RefCell::new(3);
+
+
+
 struct AppManager {
     num_app: usize,
     current_app: usize,
