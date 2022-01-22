@@ -1,0 +1,3 @@
+rust-objcopy --strip-all ./target/riscv64gc-unknown-none-elf/release/01store_fault -O binary ./target/riscv64gc-unknown-none-elf/release/01store_fault.bin
+rust-objcopy --strip-all ./target/riscv64gc-unknown-none-elf/release/02power -O binary ./target/riscv64gc-unknown-none-elf/release/02power.bin
+rust-objcopy --strip-all ./target/riscv64gc-unknown-none-elf/release/03priv_inst -O binary ./target/riscv64gc-unknown-none-elf/release/03priv_inst.bin
