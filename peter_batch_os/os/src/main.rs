@@ -6,12 +6,15 @@ use core::arch::global_asm;
 
 
 #[macro_use]
-mod lang_items;
 mod console;
+
+mod lang_items;
 mod batch;
 mod sync;
 mod sbi;
 mod trap;
+mod syscall;
+
 
 
 

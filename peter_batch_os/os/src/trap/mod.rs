@@ -1,6 +1,7 @@
-use core::arch::global_asm;
-
 mod context;
+pub use context::*;
+
+use core::arch::global_asm;
 use riscv::register::{
     mtvec::TrapMode,
     scause::{self, Exception, Trap},
@@ -27,7 +28,12 @@ pub fn trap_handler(cx: &mut TrapContext) -> &mut TrapContext {
         }
         Trap::Exception(Exception::StoreFault) |
         Trap::Exception(Exception::StorePageFault) => {
-            println!("");
+            println!("[kernel] PageFault in application, kernel killed it.");
+            run_next_app();
+        }
+        _ => {
+            panic!("Unsupported trap {:?}, stval = {:#x}!", scause.cause(), stval);
         }
     }
+    cx
 }
