@@ -11,7 +11,7 @@ In Lab part of this repository, I would implement a mini OS called peter_os.
 ## Todo List
 
 - [x] [Minimum Kernel](https://github.com/PeterWrighten/OperatingSystem/tree/main/rcore-peter-os)
-- [ ] [Batch System](https://github.com/PeterWrighten/OperatingSystem/tree/chap2/peter_os_batch)
+- [ ] [Batch System](https://github.com/PeterWrighten/OperatingSystem/tree/chap2/peter_batch_os)
 
 
 ## Reference
