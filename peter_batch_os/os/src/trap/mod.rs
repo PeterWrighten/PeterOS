@@ -1,6 +1,8 @@
 mod context;
 pub use context::*;
 
+use crate::batch::run_next_app;
+use crate::syscall::syscall;
 use core::arch::global_asm;
 use riscv::register::{
     mtvec::TrapMode,

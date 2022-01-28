@@ -7,16 +7,12 @@ use core::arch::global_asm;
 
 #[macro_use]
 mod console;
-
-mod lang_items;
 mod batch;
+mod lang_items;
 mod sync;
 mod sbi;
 mod trap;
 mod syscall;
-
-
-
 
 global_asm!(include_str!("link_app.S"));
 global_asm!(include_str!("entry.asm"));
