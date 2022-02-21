@@ -30,6 +30,14 @@ impl PhysAddr {
     pub fn floor(&self) -> PhysPageNum {
         PhysPageNum(self.0 / PAGE_SIZE)
     }
+
+    pub fn ceil(&self) -> PysPageNum {
+        PhysPageNum((self.0 - 1 + PAGE_SIZE) / PAGE_SIZE)
+    }
+
+    pub fn aligned(&self) -> bool {
+        self.page_offset() == 0
+    }
 }
 
 impl From<PhysAddr> for PysPageNum {
