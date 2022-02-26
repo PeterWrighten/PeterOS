@@ -11,7 +11,7 @@ pub struct PhysAddr(pub usize);
 pub struct VirtAddr(pub usize);
 
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq)]
-pub struct PysPageNum(pub usize);
+pub struct PhysPageNum(pub usize);
 
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub struct VirtPageNum(pub usize);
@@ -31,7 +31,7 @@ impl PhysAddr {
         PhysPageNum(self.0 / PAGE_SIZE)
     }
 
-    pub fn ceil(&self) -> PysPageNum {
+    pub fn ceil(&self) -> PhysPageNum {
         PhysPageNum((self.0 - 1 + PAGE_SIZE) / PAGE_SIZE)
     }
 
@@ -40,7 +40,7 @@ impl PhysAddr {
     }
 }
 
-impl From<PhysAddr> for PysPageNum {
+impl From<PhysAddr> for PhysPageNum {
     fn from(v: PhysAddr) -> Self {
         assert_eq!(v.page_offset(), 0);
         v.floor()

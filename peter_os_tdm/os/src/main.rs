@@ -7,6 +7,9 @@ extern crate alloc;
 #[macro_use]
 mod console;
 
+#[macro_use]
+extern crate bitflags;
+
 mod lang_items;
 mod sync;
 mod loader;
