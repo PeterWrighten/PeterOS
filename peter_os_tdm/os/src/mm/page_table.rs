@@ -1,5 +1,14 @@
 use bitflags::*;
-use crate::mm::address::{PhysPageNum};
+use crate::mm::address::{PhysPageNum, VirtPageNum};
+use crate::mm::frame_allocator::{frame_alloc, FrameTracker};
+
+trait Map {
+    // insert kv pairs
+    fn map(&mut self, vpn: VirtPageNum, ppn: PhysPageNum, flags: PTEFlags);
+
+    // delete kv pairs
+    fn unmap(&mut self, vpn: VirtPageNum);
+}
 
 bitflags! {
     pub struct PTEFlags: u8 {
@@ -11,6 +20,21 @@ bitflags! {
         const G - 1 << 5;
         const A - 1 << 6;
         const D - 1 << 7;
+    }
+}
+
+pub struct PageTable {
+    root_ppn: PhysPageNum,
+    frames: Vec<FrameTracker>,
+}
+
+impl PageTable {
+    fn new() -> Self {
+        let frame = frame_alloc().unwrap();
+        Self {
+            root_ppn: frame.ppn,
+            frames: vec![frame],
+        }
     }
 }
 

@@ -1,3 +1,5 @@
+use crate::config::{PAGE_SIZE, PAGE_SIZE_BITS};
+use crate::mm::page_table::PageTableEntry;
 
 const PA_WIDTH_SV39:usize = 56;
 
@@ -62,6 +64,31 @@ impl From<PhysAddr> for usize {
 impl From<VirtAddr> for usize {
     fn from(v: VirtAddr) -> Self {
         Self(v.0)
+    }
+}
+
+impl PhysPageNum {
+    pub fn get_pte_array(&self) -> &'static mut [PageTableEntry] {
+        let pa: PhysAddr = self.clone().into();
+        unsafe {
+            core::slice::from_raw_parts_mut(pa.0 as *mut PageTableEntry, 512)
+        }
+    }
+
+    pub fn get_bytes_array(&self) -> &'static mut [u8] {
+        let pa: PhysAddr = self.clone().into();
+        unsafe {
+            core::slice::from_raw_parts_mut(pa.0 as *mut u8, 4096)
+        }
+    }
+
+    pub fn get_mut<T>(&self) -> &'static mut T {
+        /* 'static is to ban compiler's borrowchecker, like a raw pointer,
+        but not neccesary to wrap with 'unsafe' */
+        let pa: PhysAddr = self.clone().into();
+        unsafe {
+            (pa.0 as *mut T).as_mut().unwrap()
+        }
     }
 }
 
