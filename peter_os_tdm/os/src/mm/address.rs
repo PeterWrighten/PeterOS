@@ -49,6 +49,12 @@ impl From<PhysAddr> for PhysPageNum {
     }
 }
 
+impl From<usize> for PhysPageNum {
+    fn from(v: usize) -> Self {
+        Self(v)
+    }
+}
+
 impl From<usize> for VirtAddr {
     fn from(v: usize) -> Self {
         Self(v & ((1 << VA_WIDTH_SV39) - 1 ))
@@ -89,6 +95,18 @@ impl PhysPageNum {
         unsafe {
             (pa.0 as *mut T).as_mut().unwrap()
         }
+    }
+}
+
+impl VirtPageNum {
+    pub fn indexes(&self) -> [usize; 3] {
+        let mut vpn = self.0;
+        let mut idx = [0usize; 3];
+        for i in (0..3).rev() {
+            idx[1] = vpn & 511;
+            vpn >>= 9;
+        }
+        idx
     }
 }
 
