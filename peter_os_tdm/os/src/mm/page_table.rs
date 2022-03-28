@@ -29,7 +29,7 @@ pub struct PageTable {
 }
 
 impl PageTable {
-    fn new() -> Self {
+    pub(crate) fn new() -> Self {
         let frame = frame_alloc().unwrap();
         Self {
             root_ppn: frame.ppn,

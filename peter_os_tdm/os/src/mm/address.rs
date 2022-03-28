@@ -5,6 +5,9 @@ const PA_WIDTH_SV39:usize = 56;
 
 const PPN_WIDTH_SV39: usize = PA_WIDTH_SV39 - PAGE_SIZE_BITS;
 
+pub trait StepByOne {
+    fn step(&mut self);
+}
 
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub struct PhysAddr(pub usize);
@@ -107,6 +110,12 @@ impl VirtPageNum {
             vpn >>= 9;
         }
         idx
+    }
+}
+
+impl StepByOne for VirtPageNum {
+    fn step(&mut self) {
+        self.0 += 1;
     }
 }
 
