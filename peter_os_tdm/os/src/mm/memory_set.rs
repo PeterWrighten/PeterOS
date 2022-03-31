@@ -6,6 +6,19 @@ use crate::mm::address::{PhysPageNum, VirtAddr, VirtPageNum};
 use crate::mm::frame_allocator::{frame_alloc, FrameTracker};
 use crate::mm::page_table::PageTable;
 
+extern "C" {
+    fn stext();
+    fn etext();
+    fn srodata();
+    fn erodata();
+    fn sdata();
+    fn edata();
+    fn sbss_with_stack();
+    fn ebss();
+    fn ekernel();
+    fn strampoline();
+}
+
 pub struct MapArea {
     vpn_range: VPNRange,
     data_frames: BTreeMap<VirtPageNum, FrameTracker>,
@@ -112,6 +125,11 @@ pub struct MemorySet {
 }
 
 impl MemorySet {
+    pub fn new_kernel()-> Self {
+        let mut memory_set = Self::new_bare();
+        
+    }
+
     pub fn new_bare() -> Self {
         Self {
             page_table: PageTable::new(),
