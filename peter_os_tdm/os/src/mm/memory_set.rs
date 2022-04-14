@@ -1,7 +1,7 @@
 use alloc::collections::btree_map::BTreeMap;
 use alloc::collections::BTreeMap;
 use alloc::vec::Vec;
-use crate::config::PAGE_SIZE;
+use crate::config::{MEMORY_END, PAGE_SIZE};
 use crate::mm::address::{PhysPageNum, VirtAddr, VirtPageNum};
 use crate::mm::frame_allocator::{frame_alloc, FrameTracker};
 use crate::mm::page_table::PageTable;
@@ -119,7 +119,7 @@ bitflags! {
     }
 }
 
-pub struct MemorySet {
+pub struct MemorySet {// Address Space
     page_table: PageTable,
     areas: Vec<MapArea>,
 }
@@ -158,4 +158,75 @@ impl MemorySet {
         ), None);
     }
 
+    //Without kernel stacks.
+    pub fn new_kernel() -> Self {
+        let mut memory_set = Self::new_bare();
+        // map trampoline
+        memory_set.map_trampoline();
+        // map kernel sections
+        println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
+        println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
+        println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
+        println!(".bss [{:#x}, {:#x})", sbss_with_stack as usize, ebss as usize);
+        println!("mapping .text section");
+        memory_set.push(MapArea::new(
+            (stext as usize).into(),
+            (etext as uszie).into(),
+            MapType::Identical,
+            MapPermission::R | MapPermission::X,
+            ), None);
+        println!("mapping .rodata section");
+        memory_set.push(MapArea::new(
+            (srodata as usize).into(),
+            (erodata as usize).into(),
+            MapType::Identical,
+            MapPermission::R
+        ), None);
+        println!("mapping .data section");
+        memory_set.push(MapArea::new(
+            (sdata as usize).into(),
+            (edata as usize).into(),
+            MapType::Identical,
+            MapPermission::R | MapPermission::W,
+        ), None);
+        println!("mapping .bss section");
+        memory_set.push(MapArea::new(
+            (sbss_with_stack as uszie).into(),
+            (ebss as usize).into(),
+            MapType::Identical,
+            MapPermission::R | MapPermission::W,
+        ), None);
+        println!("mapping physical memory");
+        memory_set.push(MapArea::new(
+            (ekernel as usize).into(),
+            MEMORY_END.into(),
+            MapType::Identical,
+            MapPermission::R | MapPermission::W,
+        ), None);
+        memory_set
+    }
+
+    /// Include sections in elf and trampoline and  TrapContext and user stack,
+    /// also returns user_sp and entry point.
+    pub fn from_elf(elf_data: &[u8]) -> (Self, usize, usize) {
+        let mut memory_set = Self::new_bare();
+        // map trampoline
+        memory_set.map_trampoline();
+        // map program headers of elf, with U flag
+        let elf = xmas_elf::ElfFile::new(eelf_data).unwrap();
+        let elf_header = elf.header;
+    }
+}
+
+extern "C" {
+    fn stext();
+    fn etext();
+    fn srodata();
+    fn erodata();
+    fn sdata();
+    fn edata();
+    fn sbss_with_stack();
+    fn ebss();
+    fn ekernel();
+    fn strampoline();
 }
