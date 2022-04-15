@@ -5,6 +5,15 @@ use crate::config::{MEMORY_END, PAGE_SIZE};
 use crate::mm::address::{PhysPageNum, VirtAddr, VirtPageNum};
 use crate::mm::frame_allocator::{frame_alloc, FrameTracker};
 use crate::mm::page_table::PageTable;
+use xmas_elf::*;
+
+lazy_static! {
+    pub static ref KERNEL_SPACE: Arc<UPSafeCell<MemorySet>> = Arc::new(unsafe {
+        UPSafeCell::new(MemorySet::new_kernel())
+    });
+}
+
+
 
 extern "C" {
     fn stext();
@@ -125,9 +134,12 @@ pub struct MemorySet {// Address Space
 }
 
 impl MemorySet {
-    pub fn new_kernel()-> Self {
-        let mut memory_set = Self::new_bare();
-        
+    pub fn activate(&self) {
+        let satp = self.page_table.token();
+        unsafe {
+            satp::write(satp);
+            asm!("sfence.vma" :::: "volatile");
+        }
     }
 
     pub fn new_bare() -> Self {
@@ -247,7 +259,21 @@ impl MemorySet {
         let mut user_stack_bottom: usize = max_end_va.into();
         // guard page
         user_stack_bottom += PAGE_SIZE;
-
+        let user_stack_top = user_stack_bottom + USER_STACK_SIZE;
+        memory_set.push(MapArea::new(
+            user_stack_bottom.into(),
+            user_stack_top.into(),
+            MapType::Framed,
+            MapPermission::R | MapPermission::W | MapPermission::U,
+        ), None);
+        // map TrapContext
+        memory_set.push(MapArea::new(
+            TRAP_CONTEXT.into(),
+            TRAMPOLINE.into(),
+            MapType::Framed,
+            MapPermission::R | MapPermission::W,
+        ), None);
+        (memory_set, user_stack_top, elf.header.pt2.entry_point() as usize)
     }
 }
 
@@ -263,3 +289,4 @@ extern "C" {
     fn ekernel();
     fn strampoline();
 }
+

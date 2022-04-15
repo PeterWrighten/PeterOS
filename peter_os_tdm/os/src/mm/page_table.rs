@@ -100,6 +100,10 @@ impl PageTable {
         self.find_pte(vpn)
             .map(|pte| {pte.clone()})
     }
+
+    pub fn token(&self) -> usize {
+        8usize << 60 | self.root_ppn.0
+    }
 }
 
 #[derive(Copy, Clone)]
