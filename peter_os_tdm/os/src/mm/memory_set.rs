@@ -14,7 +14,6 @@ lazy_static! {
 }
 
 
-
 extern "C" {
     fn stext();
     fn etext();
@@ -30,9 +29,27 @@ extern "C" {
 
 #[allow(unused)]
 pub fn remap_test() {
+    // In order to check correction of Page Table
     let mut kernel_space = KERNEL_SPACE.lock();
     let mid_text: VirtAddr = ((stext as usize + etext as usize) / 2).into();
-    let mid_rodata: VirtAddr =
+    let mid_rodata: VirtAddr = ((srodata as usize + erodata as usize) / 2).into();
+    let mid_data: VirAddr = ((sdata as usize + edata as usize) / 2).into();
+    assert_eq!(
+        kernel_space.page_table.translate(mid_text.floor()).unwrap().writable(),
+        false
+    );
+
+    assert_eq!(
+        kernel_space.page_table.translate(mid_rodata.floor()).unwrap().writable(),
+        false
+    );
+
+    assert_eq!(
+        kernel_space.page_table.translate(mid_data.floor()).unwrap().executable(),
+        false
+    );
+
+    println!("remap_test passed!");
 }
 
 pub struct MapArea {
