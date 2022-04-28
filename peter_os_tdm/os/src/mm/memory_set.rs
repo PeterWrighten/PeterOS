@@ -158,6 +158,14 @@ pub struct MemorySet {// Address Space
 }
 
 impl MemorySet {
+    fn map_trampoline(&mut self) {
+        self.page_table.map(
+          VirtAddr::from(TRAMPOLINE).into(),
+          PhysAddr::from(strampoline as usize).into(),
+          PTEFlags::R | PTEFlags::X,
+        );
+    }
+
     pub fn activate(&self) {
         let satp = self.page_table.token();
         unsafe {
