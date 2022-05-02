@@ -5,3 +5,8 @@ target
 **/.idea
 
 **/.vscode
+**/Cargo.lock
+
+**/.idea
+
+**/.vscode
