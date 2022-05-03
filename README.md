@@ -10,10 +10,10 @@ In Lab part of this repository, I would implement a mini OS called peter_os.
 
 ## Todo List
 
-- [x] [Minimum Kernel](https://github.com/PeterWrighten/OperatingSystem/tree/main/rcore-peter-os)
-- [x] [Batch System](https://github.com/PeterWrighten/OperatingSystem/tree/chap2/peter_batch_os)
-- [ ] [Time Sharing System](https://github.com/PeterWrighten/OperatingSystem/tree/chap3/peter_ts_os)
-- [ ] [Address Space](https://github.com/PeterWrighten/OperatingSystem/tree/chap4/peter_os_tdm)
+- [x] [Minimum Kernel](./rcore-peter-os)
+- [x] [Batch System](./peter_batch_os)
+- [x] [Time Sharing System](./peter_ts_os)
+- [ ] [Address Space](./peter_os_tdm)
 
 
 ## Reference

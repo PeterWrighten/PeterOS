@@ -5,6 +5,7 @@ mod page_table;
 mod heap_allocator;
 
 pub use memory_set::KERNEL_SPACE;
+pub use page_table::translated_byte_buffer;
 
 pub fn init() {
     heap_allocator::init_heap();
