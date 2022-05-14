@@ -40,6 +40,23 @@ pub fn sys_exit(exit_code: i32) -> ! {
     panic!("sys_exit never returns!");
 }
 
+pub fn wait(exit_code: &mut i32) -> isize {
+    loop {
+        match sys_waitpid(-1, exit_code as *mut _) {
+            -2 => { yield_() }
+            exit_pid => return exit_pid,
+        }
+    }
+}
+
+pub fn waitpid(pid: usize, exit_code: &mut i32) -> isize {
+    loop {
+        match sys_waitpid(pid as isize, exit_code as *mut _) {
+            -2 => { yield_(); }
+            exit_code => return exit_code,
+        }
+    }
+}
 
 
 /// Function: fork a child process from the current
