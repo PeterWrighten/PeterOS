@@ -1,5 +1,5 @@
 use crate::sync::UPSafeCell;
-use crate::task::pid::kernel_stack_position;
+use crate::task::pid::{kernel_stack_position, pid_alloc};
 use super::pid::{PidHandle, KernelStack};
 
 pub struct TaskControlBlock {
@@ -85,6 +85,17 @@ impl TaskControlBlockInner {
     }
     pub fn is_zombie(&self) -> bool {
         self.get_status() == TaskStatus::Zombie
+    }
+    pub fn fork(self: &Arc<TaskControlBlock>) -> Arc<TaskControlBlock> {
+        let mut parent_inner = self.inner_exclusive_access();
+        let memory_set = MemorySet::from_existed_user(
+            &parent_inner.memory_set
+        );
+        let trap_cx_ppn = memory_set
+            .translate(VirtAddr::from(TRAP_CONTEXT).into())
+            .unwrap()
+            .ppn();
+        let pid_handle = pid_alloc();
     }
 }
 
