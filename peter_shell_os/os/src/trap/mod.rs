@@ -1,3 +1,4 @@
+use crate::task::suspend_current_and_run_next;
 
 #[no_mangle]
 pub fn trap_handler() -> ! {
@@ -8,6 +9,14 @@ pub fn trap_handler() -> ! {
         Trap::Interrupt(Interrupt::SupervisorTimer) => {
             set_next_trigger();
             suspend_current_and_run_next();
+        }
+        Trap::Exception(Exception::UserEnvCall) => {
+            let mut cx = current_trap_cx();
+            cx.sepc += 4;
+            let result = syscall(cx.x[17], [cx.x[10], cx.x[11], cx.x[12]]);
+            // cx is changed during sys_exec, so we have to call it again.
+            cx = current_trap_cx();
+            cx.x[10] = result as usize;
         }
         // ...
     }

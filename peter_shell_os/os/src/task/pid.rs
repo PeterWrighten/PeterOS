@@ -2,7 +2,7 @@ use lazy_static::lazy_static;
 
 /// Based on RAII design pattern and stack-like allocation
 
-pub struct PidHandle(pub size);
+pub struct PidHandle(pub usize);
 
 impl Drop for PidHandle {
     fn drop(&mut self) {

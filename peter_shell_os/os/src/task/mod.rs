@@ -1,7 +1,8 @@
 use crate::loader::get_app_data_by_name;
-use manager::add_task;
+pub use manager::add_task;
 use processor::{take_current_task, schedule};
-use crate::task::task::TaskStatus;
+use task::TaskStatus;
+pub use processor::current_task;
 
 mod pid;
 mod task;
