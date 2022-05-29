@@ -1,3 +1,4 @@
+use std::sync::Arc;
 use crate::loader::get_app_data_by_name;
 pub use manager::add_task;
 use processor::{take_current_task, schedule};
@@ -32,4 +33,24 @@ pub fn suspend_current_and_run_next() {
     add_task(task);
     // jump to scheduling cycle
     schedule(task_cx_ptr);
+}
+
+pub fn exit_current_and_run_next(exit_code: i32) {
+    let task = take_current_task().unwrap();
+    let mut inner = task.inner_exclusive_access();
+    inner.task_status = TaskStatus::Zombie;
+    inner.exit_code = exit_code;
+    {
+        let mut init_inner = INITPROC.inner_exclusive_access();
+        for child in inner.children.iter() {
+            child.inner_exclusive_access().parent = Some(Arc::downgrade(&INITPROC));
+            init_inner.children.push(child.clone());
+        }
+    }
+    inner.children.clear();
+    inner.memory_set.recycle_data_pages();
+    drop(inner);
+    drop(task);
+    let mut _unused = TaskContext::zero_init();
+    schedule(&mut _unused as *mut _);
 }

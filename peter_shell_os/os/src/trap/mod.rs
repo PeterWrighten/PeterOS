@@ -6,6 +6,24 @@ pub fn trap_handler() -> ! {
     let scause = scause::read();
     let stval = stval::read();
     match scause.cause() {
+        Trap::Exception(Exception::StoreFault) |
+        Trap::Exception(Exception::StorePageFault) |
+        Trap::Exception(Exception::InstructionFault) |
+        Trap::Exception(Exception::InstructionPageFault) |
+        Trap::Exception(Exception::LoadFault) |
+        Trap::Exception(Exception::LoadPageFault) => {
+            println!(
+                "[kernel] {:?} in application, bad addr = {:#x}, bad instruction = {:#x}, core dumped.",
+                scause.cause(),
+                stval,
+                current_trap_cx().sepc,
+            );
+            exit_current_and_run_next(-2);
+        }
+        Trap::Exception(Exception::IllegalInstruction) => {
+            println!("[kernel] IllegalInstruction in application, core dumped.");
+            exit_current_and_run_next(-3);
+        }
         Trap::Interrupt(Interrupt::SupervisorTimer) => {
             set_next_trigger();
             suspend_current_and_run_next();
