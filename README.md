@@ -13,7 +13,9 @@ In Lab part of this repository, I would implement a mini OS called peter_os.
 - [x] [Minimum Kernel](./rcore-peter-os)
 - [x] [Batch System](./peter_batch_os)
 - [x] [Time Sharing System](./peter_ts_os)
-- [ ] [Address Space](./peter_os_tdm)
+- [x] [Address Space](./peter_os_tdm)
+- [x] [Process](./peter_shell_os)
+- [ ] [Filesystem](./peter_fs_os)
 
 
 ## Reference
