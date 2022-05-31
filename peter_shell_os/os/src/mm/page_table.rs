@@ -1,3 +1,19 @@
+
+pub struct PageTable {
+    root_vpn: VirtPageNum,
+    frames: Vec<FrameTracker>,
+}
+
+impl PageTable {
+    fn new() -> Self {
+        let frame = frame_alloc().unwrap();
+        Self {
+            root_vpn: frame.ppn,
+            frames: vec![frame],
+        }
+    }
+}
+
 pub fn translated_str(token: usize, ptr: *const u8) -> String {
     let page_table = PageTable::from_token(token);
     let mut string = string::new();
