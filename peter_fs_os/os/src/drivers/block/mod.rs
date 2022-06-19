@@ -1,3 +1,5 @@
+mod virtio_blk;
+
 #[cfg(feature = "board_qemu")]
 type BlockDeviceImpl = virtio_blk::VirtIOBlock;
 
