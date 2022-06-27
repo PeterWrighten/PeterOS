@@ -15,7 +15,8 @@ In Lab part of this repository, I would implement a mini OS called peter_os.
 - [x] [Time Sharing System](./peter_ts_os)
 - [x] [Address Space](./peter_os_tdm)
 - [x] [Process](./peter_shell_os)
-- [ ] [Filesystem](./peter_fs_os)
+- [x] [Filesystem](./peter_fs_os)
+- [ ] [Pipe](./peter_pp_os)
 
 
 ## Reference
