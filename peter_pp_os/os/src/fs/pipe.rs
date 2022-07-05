@@ -11,6 +11,36 @@ pub struct Pipe {
     buffer: Arc<Mutex<PipeRingBuffer>>,
 }
 
+impl File for Pipe {
+    fn read(&self, buf: UserBuffer) -> usize {
+        assert_eq!(self.readable, true);
+        let mut buf_iter = buf.into_iter();
+        let mut read_size = 0usize;
+        loop {
+            let mut ring_buffer = self.buffer.exclusive_access();
+            let loop_read = ring_buffer.available_read();
+            if loop_read == 0 {
+                if ring_buffer.all_write_ends_closed() {
+                    return read_size;
+                }
+                // still have unarrival data
+                drop(ring_buffer);
+                suspend_current_and_run_next();
+                continue;
+            }
+            for _ in 0..loop_read {
+                if let Some(byte_ref) = buf_iter.next() {
+                    unsafe { *byte_ref = ring_buffer.read_byte(); }
+                    read_size += 1;
+                } else {
+                    return read_size;
+                }
+            }
+
+        }
+    }
+}
+
 impl Pipe {
     pub fn readend_with_buffer(buffer: Arc<Mutex<PipeRingBuffer>>) -> Pipe {
         Pipe {
@@ -70,6 +100,23 @@ impl PipeRingBuffer {
             self.status = RingBufferStatus::EMPTY;
         }
         c
+    }
+
+    pub fn available_read(&self) -> usize {
+        if self.status == RingBufferStatus::EMPTY {
+            0
+        }  else {
+            if self.tail > self.head {
+                self.tail - self.head
+            } else {
+                self.tail + RING_BUFFER_SIZE - self.head
+            }
+        }
+    }
+
+    pub fn all_write_ends_closed(&self) -> bool {
+        // if counter == 0: all write ends closed
+        self.write_end.as_ref().unwrap().upgrade().is_none()
     }
 }
 
