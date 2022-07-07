@@ -5,6 +5,10 @@ pub struct TaskControlBlock {
 }
 
 impl TaskControlBlock {
+    pub fn  exec(&self, elf_data: &[u8], args: Vec<String>) {
+
+    }
+
     pub fn new(elf_data: &[u8]) -> Self {
         // ...
         let task_control_block = Self {
