@@ -117,7 +117,7 @@ pub struct TaskControlBlockInner {
     pub signals: SignalFlags,                   // response signal
     pub signal_mask: SignalFlags,               // block signal
     pub handling_sig: isize,                    // handling signal
-    pub signal_actions: SignalAction,          // process func
+    pub signal_actions: SignalActions,          // process func table(array of SignalAction)
     pub killed: bool,                           // killed?
     pub frozen: bool,                           // suspended?
     pub trap_ctx_backup: Option<TrapContext>,   // interrupted trap context
