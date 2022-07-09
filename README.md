@@ -16,7 +16,7 @@ In Lab part of this repository, I would implement a mini OS called peter_os.
 - [x] [Address Space](./peter_os_tdm)
 - [x] [Process](./peter_shell_os)
 - [x] [Filesystem](./peter_fs_os)
-- [ ] [Pipe](./peter_pp_os)
+- [x] [Pipe & Signal](./peter_pp_os)
 
 
 ## Reference
