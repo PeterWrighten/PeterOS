@@ -4,6 +4,8 @@ pub struct TaskControlBlock {
 
 }
 
+
+
 impl TaskControlBlock {
     pub fn  exec(&self, elf_data: &[u8], args: Vec<String>) {
         // memory_set with elf program headers/trampoline/trap context/user stack
@@ -111,7 +113,19 @@ impl TaskControlBlock {
 }
 
 pub struct TaskControlBlockInner {
+    // ..
+    pub signals: SignalFlags,                   // response signal
+    pub signal_mask: SignalFlags,               // block signal
+    pub handling_sig: isize,                    // handling signal
+    pub signal_actions: SignalAction,          // process func
+    pub killed: bool,                           // killed?
+    pub frozen: bool,                           // suspended?
+    pub trap_ctx_backup: Option<TrapContext>,   // interrupted trap context
+}
 
+pub struct SignalAction {
+    pub handler: usize,
+    pub mask: SignalFlags,
 }
 
 impl TaskControlBlockInner {

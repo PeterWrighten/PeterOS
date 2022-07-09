@@ -20,3 +20,6 @@ name = "user_shell"
 
 [[bin]]
 name = "cat"
+
+[[bin]]
+name = "sig_simple"

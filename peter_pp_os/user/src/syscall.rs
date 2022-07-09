@@ -21,3 +21,32 @@ pub fn sys_exec(path: &str, args: &[*const u8]) -> isize {
 pub fn sys_dup(fd: usize) -> isize {
     syscall(SYSCALL_DUP, [fd, 0, 0])
 }
+
+/// set instance for signal processing
+fn sys_sigaction(
+    signum: i32,
+    action: *const SignalAction,
+    old_action: *const SignalAction,
+) -> isize {
+
+}
+
+pub struct SignalAction {
+    // process func's addr
+    pub handler: usize,
+    pub mask: SignalFlags,
+}
+
+pub fn sys_sigprocmask(mask: u32) -> isize {
+
+}
+
+// clear stack
+pub fn sys_sigreturn() -> isize {
+
+}
+
+pub fn sys_kill(pid: usize, signal: i32) -> isize {
+
+}
+

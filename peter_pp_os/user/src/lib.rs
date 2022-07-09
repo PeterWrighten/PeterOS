@@ -35,3 +35,25 @@ pub extern "C" fn _start(argc: usize, argv: usize) -> ! {
     }
     exit(main(argc, v.as_slice()));
 }
+
+pub fn kill(pid: usize, signal: i32) -> isize {
+    sys_kill(pid, signal)
+}
+
+pub fn sigaction(
+    signum: i32,
+    action: *const SignalAction,
+    old_action: *const SignalAction
+) -> isize {
+    sys_sigaction(signum, action, old_action)
+}
+
+pub fn sigprocmask(mask: u32) -> isize {
+    sys_sigprocmask(mask)
+}
+
+pub fn sigreturn() -> isize {
+    sys_sigreturn()
+}
+
+
