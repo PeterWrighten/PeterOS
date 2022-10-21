@@ -1,8 +1,9 @@
 
 pub struct TaskControlBlock {
+    // immutable
     pub process: Weak<ProcessControlBlock>,
     pub kstack: KernelStack,
-    // immutable
+    // mutable
     inner: UPSafeCell<TaskControlBlockInner>,
 }
 
