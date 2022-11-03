@@ -30,3 +30,31 @@ pub fn sys_thread_create(entry: usize, arg: usize) -> isize {
     (*new_task_trap_cx).x[10] = arg;
     new_task_tid as isize
 }
+
+pub fn sys_waittid(tid: usize) -> i32 {
+    let task = current_task().unwrap();
+    let process = task.process.upgrade().unwrap();
+    let task_inner = task.inner_exclusive_access();
+    let mut process_inner = process.inner_exclusive_access();
+
+    // can not wait for itself
+    if task_inner.res.as_ref().unwrap().tid == tid {
+        return -1;
+    }
+
+    let mut exit_code: Option<i32> = None;
+    let waited_task = process_inner.tasks[tid].as_ref();
+    if let Some(waited_task) = waited_task {
+        if let Some(waited_exit_code) = waited_task.inner_exclusive_access().exit_code {
+            exit_code = Some(waited_exit_code);
+        }
+    } else {
+        return -1;
+    }
+    if let Some(exit_code) = exit_code {
+        process_inner.tasks[tid] = None;
+        exit_code
+    } else {
+        -2
+    }
+}
