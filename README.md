@@ -17,7 +17,7 @@ In Lab part of this repository, I would implement a mini OS called peter_os.
 - [x] [Process](./peter_shell_os)
 - [x] [Filesystem](./peter_fs_os)
 - [x] [Pipe & Signal](./peter_pp_os)
-
+- [ ] [Concurrency](./peter_concur_os)
 
 ## Reference
 
